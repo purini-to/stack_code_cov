@@ -15,3 +15,7 @@
 
 # VS Code
 .history
+
+# Coverage
+coverage.out
+coverage.txt
