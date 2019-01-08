@@ -54,7 +54,9 @@ jobs: # basic units of work in a run
               go fmt $(go list ./... | grep -v /vendor/)
               go vet $(go list ./... | grep -v /vendor/)
               go test -v -cover -race $(go list ./... | grep -v /vendor/) -coverprofile=$TEST_RESULTS/coverage.out -covermode=atomic
-              $GOPATH/bin/goveralls -coverprofile=$TEST_RESULTS/coverage.out
+              echo $COVERALLS_REPO_TOKEN
+              echo $COVERALLS_SERVICE_NAME
+              $GOPATH/bin/goveralls -coverprofile=$TEST_RESULTS/coverage.out -service=$COVERALLS_SERVICE_NAME -repotoken $COVERALLS_REPO_TOKEN
               
       - run: go build -race -ldflags "-extldflags '-static'" -o bin/stack_code_cov # pull and build dependencies for the project
 
