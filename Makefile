@@ -8,6 +8,8 @@ REPORT_FILE=results.xml
 BUILD_FILE_PATH=bin/
 BUILD_FILE=stack_code_cov
 TESTS_PATH=.tests/
+COVERALLS_SERVICE_NAME=
+COVERALLS_REPO_TOKEN=
 
 .PHONY: default run test report clean build
 
@@ -24,7 +26,7 @@ test: clean
 	go test -v -cover -race `go list ./... | grep -v /vendor/` -coverprofile=$(TESTS_PATH)$(COVER_PROFILE_PATH)$(COVER_PROFILE) -covermode=$(COVER_MODE) | tee $(TESTS_PATH)$(TEST_FILE_PATH)$(TEST_FILE)
 
 cover: test
-	$GOPATH/bin/goveralls -coverprofile=$TEST_RESULTS/coverage.out -service=$COVERALLS_SERVICE_NAME -repotoken $COVERALLS_REPO_TOKEN
+	$GOPATH/bin/goveralls -coverprofile=$(TESTS_PATH)$(COVER_PROFILE_PATH)$(COVER_PROFILE) -service=$(COVERALLS_SERVICE_NAME) -repotoken $(COVERALLS_REPO_TOKEN)
 
 report: cover
 	mkdir -p $(TESTS_PATH)$(REPORT_FILE_PATH)
