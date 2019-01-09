@@ -58,7 +58,7 @@ jobs: # basic units of work in a run
               make TESTS_PATH=$TEST_RESULTS/ report
               $GOPATH/bin/goveralls -coverprofile=$TEST_RESULTS/coverage.out -service=$COVERALLS_SERVICE_NAME -repotoken $COVERALLS_REPO_TOKEN
               
-      - run: make BUILD_FILE_PATH=$BUILD_RESULTS build # pull and build dependencies for the project
+      - run: make BUILD_FILE_PATH=$BUILD_RESULTS/ build # pull and build dependencies for the project
 
       - save_cache: # store cache in the /go/pkg directory
           key: v1-pkg-cache
