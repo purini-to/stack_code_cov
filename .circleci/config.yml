@@ -50,7 +50,7 @@ jobs: # basic units of work in a run
       - run:
           name: Validate code
           command: |
-              $GOPATH/bin/reviewdog -ci="circle-ci" -conf=.reviewdog.yml -reporter=github-pr-check
+              $GOPATH/bin/reviewdog -reporter=github-pr-review
       
       - run:
           name: Run unit tests
