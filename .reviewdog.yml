@@ -1,5 +1,7 @@
 runner:
   golint:
     cmd: golint `go list ./... | grep -v /vendor/`
+    errorformat:
+      - "%f:%l:%c: %m"
   govet:
-    cmd: go vet $(go list ./... | grep -v /vendor/)
+    cmd: go vet `go list ./... | grep -v /vendor/`
