@@ -21,7 +21,7 @@ run:
 
 test: clean
 	mkdir -p $(TESTS_PATH)$(COVER_PROFILE_PATH)
-	go test -v -cover -race `go list ./... | grep -v /vendor/` -coverprofile=$(TESTS_PATH)$(COVER_PROFILE_PATH)$(COVER_PROFILE) -covermode=$(COVER_MODE) 2>&1 | tee $(TESTS_PATH)$(TEST_FILE_PATH)$(TEST_FILE)
+	go test -v -cover -race `go list ./... | grep -v /vendor/` -coverprofile=$(TESTS_PATH)$(COVER_PROFILE_PATH)$(COVER_PROFILE) -covermode=$(COVER_MODE) | tee $(TESTS_PATH)$(TEST_FILE_PATH)$(TEST_FILE)
 
 report: test
 	mkdir -p $(TESTS_PATH)$(REPORT_FILE_PATH)
