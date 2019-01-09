@@ -15,11 +15,12 @@ jobs: # basic units of work in a run
 
     environment: # environment variables for the build itself
       TEST_RESULTS: /tmp/test-results # path to where test results will be saved
+      BUILD_RESULTS: /tmp/build-results
       GO111MODULE: "on"
 
     steps: # steps that comprise the `build` job
       - checkout # check out source code to working directory
-      - run: mkdir -p $TEST_RESULTS # create the test results directory
+      # - run: mkdir -p $TEST_RESULTS # create the test results directory
 
       - restore_cache: # restores saved cache if no changes are detected since last run
           keys:
@@ -53,12 +54,10 @@ jobs: # basic units of work in a run
           command: |
               go fmt $(go list ./... | grep -v /vendor/)
               go vet $(go list ./... | grep -v /vendor/)
-              go test -v -cover -race $(go list ./... | grep -v /vendor/) -coverprofile=$TEST_RESULTS/coverage.out -covermode=atomic
-              echo $COVERALLS_REPO_TOKEN
-              echo $COVERALLS_SERVICE_NAME
+              make TESTS_PATH=$TEST_RESULTS/ report
               $GOPATH/bin/goveralls -coverprofile=$TEST_RESULTS/coverage.out -service=$COVERALLS_SERVICE_NAME -repotoken $COVERALLS_REPO_TOKEN
               
-      - run: go build -race -ldflags "-extldflags '-static'" -o bin/stack_code_cov # pull and build dependencies for the project
+      - run: make BUILD_FILE_PATH=$BUILD_RESULTS build # pull and build dependencies for the project
 
       - save_cache: # store cache in the /go/pkg directory
           key: v1-pkg-cache
@@ -80,8 +79,8 @@ jobs: # basic units of work in a run
       #       curl --retry 10 --retry-delay 1 -X POST --header "Content-Type: application/json" -d '{"email":"test@example.com","name":"Test User"}' http://localhost:8080/contacts
 
       - store_artifacts: # upload test summary for display in Artifacts
-          path: /tmp/test-results
-          destination: raw-test-output
+          path: /tmp/build-results/
+          destination: artifacts
 
       - store_test_results: # upload test results for display in Test Summary
-          path: /tmp/test-results
+          path: /tmp/test-results/reports/
