@@ -25,7 +25,7 @@ test: clean
 
 report: test
 	mkdir -p $(TESTS_PATH)$(REPORT_FILE_PATH)
-	go-junit-report < $(TESTS_PATH)$(TEST_FILE_PATH)$(TEST_FILE) > $(TESTS_PATH)$(REPORT_FILE_PATH)$(REPORT_FILE)
+	go-junit-report --set-exit-code < $(TESTS_PATH)$(TEST_FILE_PATH)$(TEST_FILE) > $(TESTS_PATH)$(REPORT_FILE_PATH)$(REPORT_FILE)
 
 build: clean
 	go build -race -ldflags "-extldflags '-static'" -o $(BUILD_FILE_PATH)$(BUILD_FILE)
