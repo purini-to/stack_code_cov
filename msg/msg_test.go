@@ -7,7 +7,7 @@ func TestGetMessage(t *testing.T) {
 		name string
 		want string
 	}{
-		{name: "echo文字列を返却すること", want: "Go World."},
+		{name: "echo文字列を返却すること", want: "Go We are the world."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
