@@ -31,6 +31,8 @@ jobs: # basic units of work in a run
       - run: go get golang.org/x/tools/cmd/cover
       - run: go get github.com/mattn/goveralls
       - run: go get github.com/jstemmer/go-junit-report
+      - run: go get golang.org/x/lint/golint
+      - run: go get github.com/haya14busa/reviewdog/cmd/reviewdog
 
       #  CircleCi's Go Docker image includes netcat
       #  this allows polling the DB port to confirm it is open before proceeding
@@ -46,6 +48,11 @@ jobs: # basic units of work in a run
       #       echo Failed waiting for Postgres && exit 1
 
       - run:
+          name: Validate code
+          command: |
+              $GOPATH/bin/reviewdog -ci="circle-ci" -conf=.reviewdog.yml -reporter=github-pr-check
+      
+      - run:
           name: Run unit tests
           # environment: # environment variables for the database url and path to migration files
           #   CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
@@ -53,8 +60,6 @@ jobs: # basic units of work in a run
 
           # store the results of our tests in the $TEST_RESULTS directory
           command: |
-              go fmt $(go list ./... | grep -v /vendor/)
-              go vet $(go list ./... | grep -v /vendor/)
               make TESTS_PATH=$TEST_RESULTS/ report
               $GOPATH/bin/goveralls -coverprofile=$TEST_RESULTS/coverage.out -service=$COVERALLS_SERVICE_NAME -repotoken $COVERALLS_REPO_TOKEN
               

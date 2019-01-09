@@ -1,6 +1,6 @@
 package msg
 
-// GetMessage returns the message.
+// a returns the message.
 func GetMessage() string {
 	return "echo"
 }
