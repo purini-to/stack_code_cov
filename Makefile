@@ -23,7 +23,10 @@ test: clean
 	mkdir -p $(TESTS_PATH)$(COVER_PROFILE_PATH)
 	go test -v -cover -race `go list ./... | grep -v /vendor/` -coverprofile=$(TESTS_PATH)$(COVER_PROFILE_PATH)$(COVER_PROFILE) -covermode=$(COVER_MODE) | tee $(TESTS_PATH)$(TEST_FILE_PATH)$(TEST_FILE)
 
-report: test
+cover: test
+	$GOPATH/bin/goveralls -coverprofile=$TEST_RESULTS/coverage.out -service=$COVERALLS_SERVICE_NAME -repotoken $COVERALLS_REPO_TOKEN
+
+report: cover
 	mkdir -p $(TESTS_PATH)$(REPORT_FILE_PATH)
 	go-junit-report --set-exit-code < $(TESTS_PATH)$(TEST_FILE_PATH)$(TEST_FILE) > $(TESTS_PATH)$(REPORT_FILE_PATH)$(REPORT_FILE)
 
