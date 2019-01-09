@@ -16,6 +16,8 @@
 # VS Code
 .history
 
-# Coverage
-coverage.out
-coverage.txt
+# Tests
+.tests
+
+# Artifact
+bin
