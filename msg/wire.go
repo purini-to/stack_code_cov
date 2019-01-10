@@ -8,6 +8,6 @@ import (
 
 // InitializeMessage create instance of Message interface.
 func InitializeMessage(text string) (Message, error) {
-	wire.Build(MessageHello)
-	return new(Hello), nil
+	wire.Build(ProvideHello)
+	return nil, nil
 }

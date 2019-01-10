@@ -8,6 +8,6 @@ package msg
 // Injectors from wire.go:
 
 func InitializeMessage(text string) (Message, error) {
-	hello := ProvideHello(text)
-	return hello, nil
+	message := ProvideHello(text)
+	return message, nil
 }
