@@ -33,6 +33,7 @@ jobs: # basic units of work in a run
       - run: go get github.com/jstemmer/go-junit-report
       - run: go get golang.org/x/lint/golint
       - run: go get github.com/haya14busa/reviewdog/cmd/reviewdog
+      - run: echo $GOPATH
 
       #  CircleCi's Go Docker image includes netcat
       #  this allows polling the DB port to confirm it is open before proceeding

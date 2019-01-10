@@ -5,19 +5,9 @@
 
 package msg
 
-import (
-	"github.com/google/wire"
-)
-
 // Injectors from wire.go:
 
 func InitializeMessage(text string) (Message, error) {
 	hello := ProvideHello(text)
 	return hello, nil
 }
-
-// wire.go:
-
-// MessageHello provide wire of Hello struct.
-var MessageHello = wire.NewSet(
-	ProvideHello, wire.Bind(new(Message), new(Hello)))
