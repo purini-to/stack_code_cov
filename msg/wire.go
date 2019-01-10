@@ -6,8 +6,7 @@ import (
 	"github.com/google/wire"
 )
 
-// InitializeMessage create instance of Message interface.
-func InitializeMessage(text string) (Message, error) {
-	wire.Build(ProvideHello)
-	return nil, nil
+// InitializeHello create instance of Message interface.
+func InitializeHello(text string) (*Hello, error) {
+	panic(wire.Build(ProvideHello))
 }

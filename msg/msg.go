@@ -1,10 +1,5 @@
 package msg
 
-// Message interface get message text.
-type Message interface {
-	GetMessage() string
-}
-
 // Hello is Hello message.
 type Hello struct {
 	Text string
@@ -16,6 +11,6 @@ func (h *Hello) GetMessage() string {
 }
 
 // ProvideHello is create new instance of Hello struct.
-func ProvideHello(text string) Message {
+func ProvideHello(text string) *Hello {
 	return &Hello{Text: text}
 }
