@@ -96,8 +96,8 @@ jobs: # basic units of work in a run
       requires:
         - build
   - "Release":
-    docker: # run the steps with Docker
-      - image: alpine:latest
-    steps: 
-      - run: echo "Release!"
+      docker: # run the steps with Docker
+        - image: alpine:latest
+      steps: 
+        - run: echo "Release!"
   
