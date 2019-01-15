@@ -5,13 +5,13 @@ workflows:
   "Build Release":
     jobs:
       - Build
-      - "Approval Request":
+      - ApprovalRequest:
         type: approval
         requires:
-            - build
+          - Build
       - Release:
         requires:
-            - "Approval Request"
+          - ApprovalRequest
 
 jobs: # basic units of work in a run
   Build: # runs not using Workflows must have a `build` job as entry point
