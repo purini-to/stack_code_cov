@@ -4,17 +4,19 @@ workflows:
   version: 2
   "Build Release":
     jobs:
-      - Build
-      - ApprovalRequest:
-        type: approval
-        requires:
-          - Build
-      - Release:
-        requires:
-          - ApprovalRequest
+      - build  # your custom job from your config, that builds your code
+      - hold: # <<< A job that will require manual approval in the CircleCI web application.
+          type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
+          requires: # We only run the "hold" job when test2 has succeeded
+           - build
+      # On approval of the `hold` job, any successive job that requires the `hold` job will run. 
+      # In this case, a user is manually triggering the deploy job.
+      - deploy:
+          requires:
+            - hold
 
 jobs: # basic units of work in a run
-  Build: # runs not using Workflows must have a `build` job as entry point
+  build: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
       # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
       - image: golang:latest
@@ -105,7 +107,7 @@ jobs: # basic units of work in a run
 
       - store_test_results: # upload test results for display in Test Summary
           path: /tmp/test-results/reports/
-  Release:
+  deploy:
     docker: # run the steps with Docker
       - image: alpine:latest
     steps: 
