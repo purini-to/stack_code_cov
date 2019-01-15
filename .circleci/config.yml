@@ -95,9 +95,3 @@ jobs: # basic units of work in a run
       type: approval
       requires:
         - build
-  - "Release":
-      docker: # run the steps with Docker
-        - image: alpine:latest
-      steps: 
-        - run: echo "Release!"
-  
