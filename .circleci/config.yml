@@ -1,11 +1,12 @@
 version: 2 # use CircleCI 2.0
-jobs: # basic units of work in a run
-  - "ApprovalRequest":
-      type: approval
-  - "Release":
-      docker: # run the steps with Docker
-        - image: alpine:latest
-      steps: 
-        - run: echo "Release!"
-      requires:
-        - "Approval request"
+my_workflow:
+    jobs:
+      - "ApprovalRequest":
+          type: approval
+      - "Release":
+          docker: # run the steps with Docker
+            - image: alpine:latest
+          steps: 
+            - run: echo "Release!"
+          requires:
+            - "Approval request"
