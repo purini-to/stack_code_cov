@@ -1,6 +1,6 @@
 version: 2 # use CircleCI 2.0
 jobs: # basic units of work in a run
-  build: # runs not using Workflows must have a `build` job as entry point
+  - Build: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
       # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
       - image: golang:latest
@@ -91,3 +91,13 @@ jobs: # basic units of work in a run
 
       - store_test_results: # upload test results for display in Test Summary
           path: /tmp/test-results/reports/
+  - "Approval request":
+      type: approval
+      requires:
+        - build
+  - "Release":
+    docker: # run the steps with Docker
+      - image: alpine:latest
+    steps: 
+      - run: echo "Release!"
+  
