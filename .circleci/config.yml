@@ -4,7 +4,7 @@ workflows:
   version: 2
   "Build Release":
     jobs:
-      - build  # your custom job from your config, that builds your code
+      - build
       - hold: # <<< A job that will require manual approval in the CircleCI web application.
           type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
           requires: # We only run the "hold" job when test2 has succeeded
