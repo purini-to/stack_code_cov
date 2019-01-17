@@ -1,9 +1,25 @@
 version: 2 # use CircleCI 2.0
+
+workflows:
+  version: 2
+  "Build Release":
+    jobs:
+      - build
+      - hold: # <<< A job that will require manual approval in the CircleCI web application.
+          type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
+          requires: # We only run the "hold" job when test2 has succeeded
+           - build
+      # On approval of the `hold` job, any successive job that requires the `hold` job will run. 
+      # In this case, a user is manually triggering the deploy job.
+      - deploy:
+          requires:
+            - hold
+
 jobs: # basic units of work in a run
   build: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
       # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
-      - image: circleci/golang:1.11.4
+      - image: golang:latest
       # CircleCI PostgreSQL images available at: https://hub.docker.com/r/circleci/postgres/
       # - image: circleci/postgres:9.6-alpine
       #   environment: # environment variables for primary container
@@ -11,7 +27,7 @@ jobs: # basic units of work in a run
       #     POSTGRES_DB: circle_test
 
     # directory where steps are run. Path must conform to the Go Workspace requirements
-    working_directory: /go/src/gitlab.com/purini-to/stack_code_cov
+    # working_directory: /go/src/gitlab.com/purini-to/stack_code_cov
 
     environment: # environment variables for the build itself
       TEST_RESULTS: /tmp/test-results # path to where test results will be saved
@@ -33,6 +49,7 @@ jobs: # basic units of work in a run
       - run: go get github.com/jstemmer/go-junit-report
       - run: go get golang.org/x/lint/golint
       - run: go get github.com/haya14busa/reviewdog/cmd/reviewdog
+      - run: echo $GOPATH
 
       #  CircleCi's Go Docker image includes netcat
       #  this allows polling the DB port to confirm it is open before proceeding
@@ -68,7 +85,7 @@ jobs: # basic units of work in a run
       - save_cache: # store cache in the /go/pkg directory
           key: v1-pkg-cache
           paths:
-            - "/go/pkg"
+            - "$GOPATH/pkg"
 
       # - run:
       #     name: Start service
@@ -90,3 +107,8 @@ jobs: # basic units of work in a run
 
       - store_test_results: # upload test results for display in Test Summary
           path: /tmp/test-results/reports/
+  deploy:
+    docker: # run the steps with Docker
+      - image: alpine:latest
+    steps: 
+      - run: echo "Release!"
